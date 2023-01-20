@@ -1,0 +1,17 @@
+{
+  "name": "contact-list",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "start": "concurrently \"yarn workspace api dev\" \"yarn workspace application dev\""
+  },
+  "workspaces": [
+    "api",
+    "application"
+  ],
+  "devDependencies": {
+    "concurrently": "^7.6.0"
+  }
+}
