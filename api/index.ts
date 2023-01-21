@@ -1,21 +1,19 @@
-import { Request, Response } from "express";
 import * as dotenv from "dotenv";
 dotenv.config();
 
 import express from "express";
 import { PrismaClient } from "@prisma/client";
+import { contactsRoutes } from "./routes/contacts.route";
 
-const prisma = new PrismaClient();
+export const prisma = new PrismaClient();
 
 const port = process.env.PORT;
 
 const app = express();
 
-app.get("/test", async (req: Request, res: Response) => {
-  const users = await prisma.contact.findMany();
-  console.log(users);
-  res.send({ data: "Hello!!" });
-});
+app.use(express.json());
+
+app.use("/contacts", contactsRoutes);
 
 app.listen(port, () => {
   console.log(`Server running on ${port}`);
