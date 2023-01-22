@@ -1,0 +1,51 @@
+.no-icon {
+  @apply px-4 py-2;
+}
+
+.icon {
+  padding: 8px 16px 8px 12px;
+}
+
+.btn {
+  font-size: 14px;
+  margin: 30px;
+
+  @apply h-10 rounded-lg flex flex-row items-center gap-2 leading-18 font-Lexend font-normal;
+}
+
+.btn-primary {
+  @apply bg-grey-60 text-white hover:bg-grey-50 active:bg-grey-40;
+}
+
+.btn-secondary {
+  @apply bg-grey-100 text-white hover:bg-grey-90 active:bg-grey-80;
+}
+
+.btn-special {
+  position: relative;
+
+  @apply text-white rounded-1000;
+}
+
+.btn-special::before {
+  border-image-source: linear-gradient(
+    180deg,
+    #3c3c3c 0%,
+    rgba(60, 60, 60, 0) 100%
+  );
+
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border: 1px solid transparent;
+  background: linear-gradient(180deg, #3c3c3c 0%, rgba(60, 60, 60, 0) 100%)
+    border-box;
+  -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: destination-out;
+  mask-composite: exclude;
+
+  @apply text-white rounded-1000;
+}
