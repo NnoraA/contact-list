@@ -1,14 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  async rewrites() {
-    return [
-      {
-        source: '/:slug*',
-        destination: 'http://localhost:3001/:slug*', 
-      },
-    ]
-  },
+  env:{
+    API_URL: process.env.API_URL
+  }
 }
 
 module.exports = nextConfig
