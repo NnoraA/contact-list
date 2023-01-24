@@ -13,17 +13,20 @@ export const Button = ({
   children,
   isDisabled = false,
   clickHandler,
-  type = "primary",
+  blurHandler,
+  variation = "primary",
+  type,
 }: PropsWithChildren<ButtonProps>): JSX.Element => {
-  const buttonType = typeMap[type];
+  const buttonType = typeMap[variation];
   const iconClassName = icon ? styles.icon : styles["no-icon"];
-
   return (
     <>
       <button
         disabled={isDisabled}
         onClick={clickHandler}
         className={`${styles.btn} ${buttonType} ${iconClassName}`}
+        onBlur={blurHandler}
+        type={type}
       >
         {children}
       </button>

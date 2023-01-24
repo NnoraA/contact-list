@@ -1,8 +1,10 @@
 export type ButtonType = "primary" | "secondary" | "special";
 
 export type ButtonProps = {
-  icon?: JSX.Element;
+  icon?: boolean;
   isDisabled?: boolean;
   clickHandler?: () => void;
-  type: ButtonType;
+  blurHandler?: (e: any) => void;
+  variation?: ButtonType;
+  type?: "submit" | "reset" | "button";
 };

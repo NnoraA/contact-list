@@ -14,11 +14,11 @@
 }
 
 .btn-primary {
-  @apply bg-grey-60 text-white hover:bg-grey-50 active:bg-grey-40;
+  @apply !bg-grey-60 text-white hover:!bg-grey-50 active:!bg-grey-40 m-0;
 }
 
 .btn-secondary {
-  @apply bg-grey-100 text-white hover:bg-grey-90 active:bg-grey-80;
+  @apply bg-grey-100 text-white hover:bg-grey-90 active:bg-grey-80 m-0;
 }
 
 .btn-special {
