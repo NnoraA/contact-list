@@ -2,6 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+* {
+  box-sizing: border-box;
+}
+
+#__next {
+  height: 100%;
+}
+
 @font-face {
   font-family: "Glysa";
   src: url("../../public/fonts/Glysa.otf");
@@ -10,4 +18,24 @@
 @font-face {
   font-family: "Lexend";
   src: url("../../public/fonts/LexendDeca-VariableFont_wght.ttf");
+}
+
+.headline-1 {
+  @apply font-Glysa text-white text-[2rem] leading-[3rem] p-7;
+}
+
+.headline-2 {
+  @apply font-Glysa text-white text-[1.5rem] leading-10;
+}
+
+.headline-3 {
+  @apply font-Lexend text-white text-[1rem] leading-6 tracking-[1%];
+}
+
+.interactive-element {
+  @apply font-Lexend text-white text-[0.875rem] leading-5 tracking-[1%];
+}
+
+.message {
+  @apply font-Lexend text-white text-[0.75rem] leading-3 tracking-[1%];
 }
