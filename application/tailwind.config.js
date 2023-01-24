@@ -10,7 +10,8 @@ module.exports = {
         '18': '18px',
       },
       opacity: {
-        '54': '.54'
+        '54': '.54',
+        '32': '.32'
       },
       colors: {
         grey: {
