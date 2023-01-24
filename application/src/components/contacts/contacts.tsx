@@ -1,27 +1,25 @@
 import { GetServerSideProps, GetStaticProps } from "next";
-import { useEffect } from "react";
 import { dehydrate, DehydratedState, QueryClient, useQuery } from "react-query";
-import { Button } from "../elements/button";
+import { ContactListItem } from "./contact-list-item";
 import { useGetContacts } from "./hooks/get-contacts.hook";
 
 export const Contacts = () => {
-  const { isLoading, isError, error, data } = useQuery(
-    "getContacts",
-    useGetContacts
-  );
-
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
+  const { isLoading, isError, error, data } = useQuery<{
+    contacts: [{ id: string; picture: any; name: string; phoneNumber: number }];
+  }>("getContacts", useGetContacts);
 
   return (
-    <>
-      <Button type="primary">Add new [primary]</Button>
-      <Button type="secondary">Add new [secondary]</Button>
-      <Button type="special">Add new [special]</Button>
-
-      <h1 className="text-3xl font-bold underline blue-500">Hello world!</h1>
-    </>
+    <div className="bg-grey-100">
+      {data?.contacts.map((contact) => (
+        <ContactListItem
+          key={contact.id}
+          id={contact.id}
+          name={contact.name}
+          phoneNumber={contact.phoneNumber}
+          picture={contact.picture}
+        ></ContactListItem>
+      ))}
+    </div>
   );
 };
 

@@ -83,13 +83,13 @@ contactsRoutes.delete("/:id", async (req: Request, res: Response) => {
   const { id } = req.params;
 
   try {
-    await prisma.contact.deleteMany({
+    const deleted = await prisma.contact.deleteMany({
       where: {
         id,
       },
     });
 
-    res.status(204).send();
+    res.status(204).json({ deleted });
   } catch (error) {
     res.status(500).send({
       error: {
