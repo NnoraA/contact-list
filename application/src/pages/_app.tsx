@@ -1,3 +1,4 @@
+import { Layout } from "@application/components/layout";
 import "@application/styles/globals.css";
 import type { AppProps } from "next/app";
 import { useState } from "react";
@@ -20,7 +21,9 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <QueryClientProvider client={queryClient}>
       <Hydrate state={pageProps.dehydratedState}>
-        <Component {...pageProps} />
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
         <ReactQueryDevtools initialIsOpen={false} />
       </Hydrate>
     </QueryClientProvider>
