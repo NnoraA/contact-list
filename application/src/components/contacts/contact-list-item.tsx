@@ -9,6 +9,7 @@ export const ContactListItem = ({
   picturePath: picture,
   name,
   phoneNumber,
+  email,
 }: ContactProps) => {
   return (
     <div className="group flex justify-between p-3 sm:p-7">
@@ -27,7 +28,9 @@ export const ContactListItem = ({
           <Image src="icons/call.svg" alt="call" width={24} height={24} />
         </Button>
 
-        <MoreButton contactId={id} />
+        <MoreButton
+          contactData={{ id, picturePath: picture, name, phoneNumber, email }}
+        />
       </div>
     </div>
   );

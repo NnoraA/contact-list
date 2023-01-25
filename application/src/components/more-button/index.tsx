@@ -5,11 +5,12 @@ import { useDeleteContacts } from "./hooks/delete-contact.hook";
 import { useMutation } from "react-query";
 import { useRefetchGetContacts } from "@application/components/common/hooks/use-refetch-get-contacts.hook";
 import { DialogData } from "@application/context/dialog-context";
+import { ContactProps } from "../contacts/contact.type";
 
 export const MoreButton = ({
-  contactId,
+  contactData,
 }: {
-  contactId: string;
+  contactData: ContactProps;
 }): JSX.Element => {
   const [open, setOpen] = useState(false);
   const refetchContacts = useRefetchGetContacts();
@@ -38,6 +39,7 @@ export const MoreButton = ({
             <button
               className="flex items-center w-full"
               onClick={() => {
+                dialogContext?.setContactData?.(contactData);
                 dialogContext?.setFormIsOpen(true);
               }}
             >
@@ -64,7 +66,7 @@ export const MoreButton = ({
           <li className="flex p-4 hover:bg-grey-70">
             <button
               onClick={async () => {
-                await mutation.mutateAsync(contactId);
+                await mutation.mutateAsync(contactData.id);
                 refetchContacts();
               }}
               className="flex items-center w-full"

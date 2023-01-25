@@ -6,7 +6,13 @@ import { useGetContacts } from "./hooks/get-contacts.hook";
 export const Contacts = () => {
   const { isLoading, isError, error, data } = useQuery<{
     contacts: [
-      { id: string; picturePath: string; name: string; phoneNumber: string }
+      {
+        id: string;
+        picturePath: string;
+        name: string;
+        phoneNumber: string;
+        email: string;
+      }
     ];
   }>("getContacts", useGetContacts);
   return (
@@ -18,6 +24,7 @@ export const Contacts = () => {
           name={contact.name}
           phoneNumber={contact.phoneNumber}
           picturePath={contact.picturePath}
+          email={contact.email}
         ></ContactListItem>
       ))}
     </div>

@@ -10,12 +10,17 @@ import { useRefetchGetContacts } from "../common/hooks/use-refetch-get-contacts.
 import { PreviewProfilePicture } from "../elements/preview-picture";
 import { DialogData } from "@application/context/dialog-context";
 
-export const FormDialog = ({ contactData }: FormDialogProps) => {
-  const [name, setName] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [email, setEmail] = useState("");
-  const [picture, setPicture] = useState<string | File | undefined>();
+export const FormDialog = () => {
   const dialogContext = useContext(DialogData);
+
+  const [name, setName] = useState(dialogContext?.contactData?.name ?? "");
+  const [phoneNumber, setPhoneNumber] = useState(
+    dialogContext?.contactData?.phoneNumber ?? ""
+  );
+  const [email, setEmail] = useState(dialogContext?.contactData?.email ?? "");
+  const [picture, setPicture] = useState<string | File | undefined>(
+    dialogContext?.contactData?.picturePath
+  );
 
   const actualBtnRef = useRef<HTMLInputElement>(null);
   const refetchContacts = useRefetchGetContacts();
@@ -30,7 +35,7 @@ export const FormDialog = ({ contactData }: FormDialogProps) => {
   const editContactCall = useUpdateContacts();
   const editContactMutation = useMutation({
     mutationFn: () =>
-      editContactCall(contactData!.id, {
+      editContactCall(dialogContext!.contactData!.id, {
         name,
         phoneNumber,
         email,
@@ -42,28 +47,28 @@ export const FormDialog = ({ contactData }: FormDialogProps) => {
     e.preventDefault();
     e.stopPropagation();
 
-    if (contactData) {
+    if (dialogContext?.contactData?.id) {
       try {
         await editContactMutation.mutateAsync();
         dialogContext?.setFormIsOpen(false);
+        dialogContext?.setContactData?.(undefined);
       } catch {}
     } else {
       try {
         await addContactMutation.mutateAsync();
         dialogContext?.setFormIsOpen(false);
+        dialogContext?.setContactData?.(undefined);
       } catch {}
     }
     refetchContacts();
   };
-
-  console.log(picture);
 
   return (
     <>
       <div className="absolute inset-y-0 w-screen h-screen bg-black/40 flex items-center justify-center">
         <div className=" bg-grey-100 absolute opacity-100 p-6 rounded-lg">
           <h2 className="headline-2">
-            {contactData ? "Edit contact" : "Add contact"}
+            {dialogContext?.contactData?.id ? "Edit contact" : "Add contact"}
           </h2>
           <form onSubmit={handleSumbit} className="flex flex-col gap-6 ">
             <div className="flex my-6 gap-2 items-center">
@@ -137,7 +142,10 @@ export const FormDialog = ({ contactData }: FormDialogProps) => {
             <div className="flex w-full justify-end items-center gap-2 mt-6">
               <Button
                 variation="secondary"
-                clickHandler={() => dialogContext?.setFormIsOpen(false)}
+                clickHandler={() => {
+                  dialogContext?.setFormIsOpen(false);
+                  dialogContext?.setContactData?.(undefined);
+                }}
               >
                 Cancel
               </Button>
