@@ -11,7 +11,7 @@ export const ContactListItem = ({
   phoneNumber,
 }: ContactProps) => {
   return (
-    <div className="group flex justify-between p-7 ">
+    <div className="group flex justify-between p-3 sm:p-7">
       <div className="flex ">
         <ProfilePicture picture={picture} />
         <div className="ml-7">
