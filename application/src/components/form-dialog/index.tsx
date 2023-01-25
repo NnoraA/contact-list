@@ -1,17 +1,62 @@
-import { FormEvent, useState } from "react";
+import { FormEvent, useContext, useRef, useState } from "react";
 import { Button } from "../elements/button";
 import { TextField } from "../elements/text-field";
 import Image from "next/image";
 import { FormDialogProps } from "./form-dialog.type";
+import { useMutation } from "react-query";
+import { useAddContacts } from "./hooks/add-contact.hook";
+import { useUpdateContacts } from "./hooks/update-contact.hook";
+import { useRefetchGetContacts } from "../common/hooks/use-refetch-get-contacts.hook";
+import { PreviewProfilePicture } from "../elements/preview-picture";
+import { DialogData } from "@application/context/dialog-context";
 
-export const FormDialog = ({ setFormIsOpen, contactData }: FormDialogProps) => {
+export const FormDialog = ({ contactData }: FormDialogProps) => {
   const [name, setName] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [email, setEmail] = useState("");
+  const [picture, setPicture] = useState<string | File | undefined>();
+  const dialogContext = useContext(DialogData);
 
-  const handleSumbit = (e: FormEvent) => {
+  const actualBtnRef = useRef<HTMLInputElement>(null);
+  const refetchContacts = useRefetchGetContacts();
+
+  const addContactCall = useAddContacts();
+  const addContactMutation = useMutation({
+    mutationFn: () => {
+      return addContactCall({ name, phoneNumber, email, picturePath: picture });
+    },
+  });
+
+  const editContactCall = useUpdateContacts();
+  const editContactMutation = useMutation({
+    mutationFn: () =>
+      editContactCall(contactData!.id, {
+        name,
+        phoneNumber,
+        email,
+        picturePath: picture,
+      }),
+  });
+
+  const handleSumbit = async (e: FormEvent) => {
     e.preventDefault();
+    e.stopPropagation();
+
+    if (contactData) {
+      try {
+        await editContactMutation.mutateAsync();
+        dialogContext?.setFormIsOpen(false);
+      } catch {}
+    } else {
+      try {
+        await addContactMutation.mutateAsync();
+        dialogContext?.setFormIsOpen(false);
+      } catch {}
+    }
+    refetchContacts();
   };
+
+  console.log(picture);
 
   return (
     <>
@@ -20,9 +65,13 @@ export const FormDialog = ({ setFormIsOpen, contactData }: FormDialogProps) => {
           <h2 className="headline-2">
             {contactData ? "Edit contact" : "Add contact"}
           </h2>
-          <form onSubmit={handleSumbit} className="flex flex-col gap-6">
-            <div className="flex my-6 gap-2">
-              <Button>
+          <form onSubmit={handleSumbit} className="flex flex-col gap-6 ">
+            <div className="flex my-6 gap-2 items-center">
+              <PreviewProfilePicture picture={picture} />
+              <Button
+                clickHandler={() => actualBtnRef?.current?.click()}
+                type="button"
+              >
                 <Image
                   src="icons/change.svg"
                   alt="change"
@@ -31,14 +80,37 @@ export const FormDialog = ({ setFormIsOpen, contactData }: FormDialogProps) => {
                 />
                 Change picture
               </Button>
-              <Button>
-                <Image
-                  src="icons/delete.svg"
-                  alt="delete"
-                  width={20}
-                  height={20}
-                />
-              </Button>
+              <input
+                type="file"
+                className="hidden"
+                accept="image/*"
+                ref={actualBtnRef}
+                onInput={(event) => {
+                  event.preventDefault();
+                  event.stopPropagation();
+                  setPicture(event.currentTarget.files?.[0]);
+                }}
+              />
+              {picture ? (
+                <Button
+                  type="button"
+                  clickHandler={() => {
+                    setPicture(undefined);
+                    if (actualBtnRef.current?.value) {
+                      actualBtnRef.current.value = "";
+                    }
+                  }}
+                >
+                  <Image
+                    src="icons/delete.svg"
+                    alt="delete"
+                    width={20}
+                    height={20}
+                  />
+                </Button>
+              ) : (
+                <></>
+              )}
             </div>
 
             <TextField
@@ -62,10 +134,10 @@ export const FormDialog = ({ setFormIsOpen, contactData }: FormDialogProps) => {
               placehorder="jamie.wright@mail.com"
               inputChangeHandler={(event) => setEmail(event.target.value)}
             />
-            <div className="flex w-full justify-end items-center gap-2">
+            <div className="flex w-full justify-end items-center gap-2 mt-6">
               <Button
                 variation="secondary"
-                clickHandler={() => setFormIsOpen(false)}
+                clickHandler={() => dialogContext?.setFormIsOpen(false)}
               >
                 Cancel
               </Button>

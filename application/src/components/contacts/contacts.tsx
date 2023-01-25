@@ -5,18 +5,19 @@ import { useGetContacts } from "./hooks/get-contacts.hook";
 
 export const Contacts = () => {
   const { isLoading, isError, error, data } = useQuery<{
-    contacts: [{ id: string; picture: any; name: string; phoneNumber: number }];
+    contacts: [
+      { id: string; picturePath: string; name: string; phoneNumber: string }
+    ];
   }>("getContacts", useGetContacts);
-
   return (
-    <div className="bg-grey-100">
+    <div className="bg-grey-100 h-[75vh] whitespace-nowrap overflow-auto no-scrollbar">
       {data?.contacts.map((contact) => (
         <ContactListItem
           key={contact.id}
           id={contact.id}
           name={contact.name}
           phoneNumber={contact.phoneNumber}
-          picture={contact.picture}
+          picturePath={contact.picturePath}
         ></ContactListItem>
       ))}
     </div>
