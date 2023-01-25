@@ -3,7 +3,7 @@ import Image from "next/image";
 export const ProfilePicture = ({
   picture,
 }: {
-  picture: string | undefined;
+  picture: File | string | undefined;
 }) => {
   return (
     <>
