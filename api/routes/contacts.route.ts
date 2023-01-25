@@ -21,14 +21,14 @@ contactsRoutes.get("/", async (req: Request, res: Response) => {
 
 contactsRoutes.post(
   "/",
-  upload.single("picture"),
+  upload.single("picturePath"),
   async (req: Request, res: Response) => {
     const contact = req.body;
     const file = req.file;
 
     try {
       const createdContact = await prisma.contact.create({
-        data: { ...contact, picturePath: file?.path ?? "" },
+        data: { ...contact, picturePath: file?.filename ?? "" },
       });
       res.send({ createdContact });
     } catch (error) {
@@ -56,7 +56,7 @@ contactsRoutes.post(
 
 contactsRoutes.put(
   "/:id",
-  upload.single("picture"),
+  upload.single("picturePath"),
   async (req: Request, res: Response) => {
     const contact = req.body;
     const { id } = req.params;
@@ -67,7 +67,7 @@ contactsRoutes.put(
         where: {
           id,
         },
-        data: { ...contact, picturePath: file?.path ?? "" },
+        data: { ...contact, picturePath: file?.filename ?? "" },
       });
 
       res.send({ updatedContact });

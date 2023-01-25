@@ -1,6 +1,7 @@
 export type ContactProps = {
   id: string;
   name: string;
-  phoneNumber: number;
-  picture?: string;
+  phoneNumber: string;
+  email?: string;
+  picturePath?: string | File | undefined;
 };

@@ -9,14 +9,13 @@ export const TextField = ({
 }: TextFieldProps) => {
   return (
     <div className="flex flex-col">
-      <label htmlFor="first" className="message opacity-54 pb-1 ">
+      <label htmlFor={label} className="message opacity-54 pb-1 ">
         {label}
       </label>
       <input
-        className="bg-grey-60 rounded-lg border border-solid border-grey-10 py-2 px-3 placeholder:interactive-element placehorder:opacity-32 interactive-element"
+        className="bg-grey-60 rounded-lg border border-solid border-grey-60  focus:outline-grey-10 py-2 px-3 placeholder:interactive-element placehorder:opacity-32 interactive-element"
         type={type}
-        id="first"
-        name="first"
+        id={label}
         value={value}
         placeholder={placehorder}
         onChange={inputChangeHandler}
