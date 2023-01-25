@@ -1,6 +1,7 @@
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime";
 import { Request, Response, Router } from "express";
 import { prisma } from "..";
+import { upload } from "../lib/multer";
 
 export const contactsRoutes = Router();
 
@@ -18,66 +19,78 @@ contactsRoutes.get("/", async (req: Request, res: Response) => {
   }
 });
 
-contactsRoutes.post("/", async (req: Request, res: Response) => {
-  const contact = req.body;
+contactsRoutes.post(
+  "/",
+  upload.single("picture"),
+  async (req: Request, res: Response) => {
+    const contact = req.body;
+    const file = req.file;
 
-  try {
-    const createdContact = await prisma.contact.create({
-      data: { ...contact },
-    });
-    res.send({ createdContact });
-  } catch (error) {
-    if (
-      error instanceof PrismaClientKnownRequestError &&
-      error.code === "P2002"
-    ) {
-      res.status(400).send({
-        error: {
-          message: `Unique constraint failed on ${error.meta?.target}`,
-        },
+    try {
+      const createdContact = await prisma.contact.create({
+        data: { ...contact, picturePath: file?.path ?? "" },
       });
-    } else {
-      res.status(500).send({
-        error: {
-          message: `Unexpected error has happened`,
-        },
-      });
+      res.send({ createdContact });
+    } catch (error) {
+      console.log(error);
+
+      if (
+        error instanceof PrismaClientKnownRequestError &&
+        error.code === "P2002"
+      ) {
+        res.status(400).send({
+          error: {
+            message: `Unique constraint failed on ${error.meta?.target}`,
+          },
+        });
+      } else {
+        res.status(500).send({
+          error: {
+            message: `Unexpected error has happened`,
+          },
+        });
+      }
     }
   }
-});
+);
 
-contactsRoutes.put("/:id", async (req: Request, res: Response) => {
-  const contact = req.body;
-  const { id } = req.params;
+contactsRoutes.put(
+  "/:id",
+  upload.single("picture"),
+  async (req: Request, res: Response) => {
+    const contact = req.body;
+    const { id } = req.params;
+    const file = req.file;
 
-  try {
-    const updatedContact = await prisma.contact.update({
-      where: {
-        id,
-      },
-      data: { ...contact },
-    });
-
-    res.send({ updatedContact });
-  } catch (error) {
-    if (
-      error instanceof PrismaClientKnownRequestError &&
-      error.code === "P2002"
-    ) {
-      res.status(400).send({
-        error: {
-          message: `Unique constraint failed on ${error.meta?.target}`,
+    try {
+      const updatedContact = await prisma.contact.update({
+        where: {
+          id,
         },
+        data: { ...contact, picturePath: file?.path ?? "" },
       });
-    } else {
-      res.status(500).send({
-        error: {
-          message: `Unexpected error has happened`,
-        },
-      });
+
+      res.send({ updatedContact });
+    } catch (error) {
+      if (
+        error instanceof PrismaClientKnownRequestError &&
+        error.code === "P2002"
+      ) {
+        res.status(400).send({
+          error: {
+            message: `Unique constraint failed on ${error.meta?.target}`,
+          },
+        });
+      } else {
+        res.status(500).send({
+          error: {
+            message: `Unexpected error has happened`,
+          },
+        });
+      }
     }
   }
-});
+);
 
 contactsRoutes.delete("/:id", async (req: Request, res: Response) => {
   const { id } = req.params;

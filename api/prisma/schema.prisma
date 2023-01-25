@@ -8,9 +8,9 @@ datasource db {
 }
 
 model Contact {
-  id          String @id @default(uuid())
-  email       String @unique
+  id          String  @id @default(uuid())
+  email       String  @unique
   name        String
   phoneNumber String
-  picture     Bytes?
+  picturePath String?
 }
