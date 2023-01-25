@@ -1,4 +1,5 @@
 import { Layout } from "@application/components/layout";
+import { DialogContext } from "@application/context/dialog-context";
 import "@application/styles/globals.css";
 import type { AppProps } from "next/app";
 import { useState } from "react";
@@ -21,9 +22,11 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <QueryClientProvider client={queryClient}>
       <Hydrate state={pageProps.dehydratedState}>
-        <Layout>
-          <Component {...pageProps} />
-        </Layout>
+        <DialogContext>
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
+        </DialogContext>
         <ReactQueryDevtools initialIsOpen={false} />
       </Hydrate>
     </QueryClientProvider>

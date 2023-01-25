@@ -1,11 +1,12 @@
-import { PropsWithChildren, useState } from "react";
+import { PropsWithChildren, useContext, useState } from "react";
 import Image from "next/image";
-import { Button } from "./elements/button";
 import { Header } from "./header/header";
 import { FormDialog } from "./form-dialog";
+import { useRefetchGetContacts } from "./common/hooks/use-refetch-get-contacts.hook";
+import { DialogData } from "@application/context/dialog-context";
 
 export const Layout = ({ children }: PropsWithChildren) => {
-  const [formIsOpen, setFormIsOpen] = useState(false);
+  const dialogContext = useContext(DialogData);
 
   return (
     <>
@@ -19,7 +20,7 @@ export const Layout = ({ children }: PropsWithChildren) => {
             height={24}
           />
         </div>
-        <Header setFormIsOpen={setFormIsOpen} />
+        <Header />
         <main className=" border-grey-60 border-x col-start-2 row-start-3">
           <section>{children}</section>
         </main>
@@ -31,7 +32,7 @@ export const Layout = ({ children }: PropsWithChildren) => {
             height={24}
           />
         </div>
-        {formIsOpen && <FormDialog setFormIsOpen={setFormIsOpen} />}
+        {dialogContext?.formIsOpen && <FormDialog />}
       </div>
     </>
   );
