@@ -24,7 +24,7 @@ export const MoreButton = ({
   });
 
   return (
-    <div>
+    <div onMouseLeave={() => setOpen(false)}>
       <Button
         variation="secondary"
         clickHandler={() => {
@@ -34,7 +34,7 @@ export const MoreButton = ({
         <Image src="icons/more.svg" alt="more" width={24} height={24} />
       </Button>
       {open ? (
-        <ul className="rounded-lg absolute bg-grey-80  w-56  ">
+        <ul className="rounded-lg absolute bg-grey-80 w-56">
           <li className="flex items-center p-4 hover:bg-grey-70">
             <button
               className="flex items-center w-full"
