@@ -14,7 +14,7 @@ export const PreviewProfilePicture = ({
           picture
             ? typeof picture !== "string"
               ? URL.createObjectURL(picture)
-              : `http://localhost:3001/${picture}`
+              : `${process.env.API_URL}/${picture}`
             : "/photos/Default.png"
         }
         alt="profile picture"

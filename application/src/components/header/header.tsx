@@ -1,6 +1,6 @@
 import { Button } from "../elements/button";
 import Image from "next/image";
-import { Dispatch, SetStateAction, useContext, useState } from "react";
+import { useContext } from "react";
 import { DialogData } from "@application/context/dialog-context";
 
 export const Header = () => {
