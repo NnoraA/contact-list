@@ -1,5 +1,4 @@
 import Image from "next/image";
-import { useEffect } from "react";
 
 export const PreviewProfilePicture = ({
   picture,

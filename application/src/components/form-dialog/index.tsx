@@ -2,7 +2,6 @@ import { FormEvent, useContext, useRef, useState } from "react";
 import { Button } from "../elements/button";
 import { TextField } from "../elements/text-field";
 import Image from "next/image";
-import { FormDialogProps } from "./form-dialog.type";
 import { useMutation } from "react-query";
 import { useAddContacts } from "./hooks/add-contact.hook";
 import { useUpdateContacts } from "./hooks/update-contact.hook";
@@ -12,7 +11,6 @@ import { DialogData } from "@application/context/dialog-context";
 
 export const FormDialog = () => {
   const dialogContext = useContext(DialogData);
-
   const [name, setName] = useState(dialogContext?.contactData?.name ?? "");
   const [phoneNumber, setPhoneNumber] = useState(
     dialogContext?.contactData?.phoneNumber ?? ""
