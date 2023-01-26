@@ -36,7 +36,7 @@
 }
 
 .headline-1 {
-  @apply font-Glysa text-white sm:text-[2rem] leading-[3rem] text-[1.1rem];
+  @apply font-Glysa text-white sm:text-[2rem] leading-[3rem] text-[1.5rem];
 }
 
 .headline-2 {

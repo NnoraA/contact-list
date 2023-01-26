@@ -7,7 +7,7 @@ export const Header = () => {
   const dialogContext = useContext(DialogData);
 
   return (
-    <div className=" border-grey-60 border col-start-2 row-start-2 w-full h-full flex justify-between items-center p-3 sm:p-7">
+    <div className=" border-grey-60 border col-start-2 row-start-2 w-full h-full  sm:flex justify-between items-center p-3 sm:p-7">
       <h1 className="headline-1 p-0">Contacts</h1>
       <div className="flex items-center gap-7">
         <Image src="icons/settings.svg" alt="settings" width={24} height={24} />
